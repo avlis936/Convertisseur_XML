@@ -1,0 +1,59 @@
+<commandes>
+    <commande id="C1" nb-produit ="3" >
+        <nom-client>Durand</ nom-client >
+        <email> durand @gmail.com </email>
+        <ville> Paris </ville>
+        <date>25-5-2022</date>
+        <total> … < /total>
+        <produits>
+            <produit>
+                <nom>Clavier</nom>
+                <prix>20</prix>
+                <quantité>3</quantité>
+            </produit>
+            <produit>
+                <nom>Souris</nom>
+                <prix>10</prix>
+                <quantité>4</quantité>
+            </produit>
+            <produit>
+                <nom>Écran</nom>
+                <prix>100</prix>
+                <quantité>1</quantité>
+            </produit>
+        </produits>
+    </commande>
+    <commande id="C2" nb-produit ="2" >
+        <nom-client >Dupont</ nom-client >
+        <email> dupont @gmail.com </email>
+        <ville> Lyon </ville>
+        <date>25-7-2023</date>
+        <total> … < /total>
+        <produits>
+            <produit>
+                <nom>Télévision</nom>
+                <prix>150</prix>
+                <quantité>3</quantité>
+            </produit>
+            <produit>
+                <nom>Frigo</nom>
+                <prix>200</prix>
+                <quantité>1</quantité>
+            </produit>
+        </produits>
+    </commande>
+    <commande id="C3" nb-produit ="1" >
+        <nom-client > Martin </ nom-client >
+        <email> martin @gmail.com </email>
+        <ville> Caen </ville>
+        <date>25-10-2024</date>
+        <total> 300 < /total>
+        <produits>
+            <produit>
+                <nom>Machine à laver</nom>
+                <prix>200</prix>
+                <quantité>3</quantité>
+            </produit>
+        </produits>
+    </commande>
+</commandes>
