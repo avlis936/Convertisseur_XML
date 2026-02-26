@@ -37,9 +37,9 @@ public class SQLCreationTable {
             """;
 
             String sqlCommandesAlter = """
-                ALTER TABLE Commandes ADD CONSTRAINT fk_client_id 
+                ALTER TABLE Commandes ADD CONSTRAINT fk_commandes_client_id\s
                     FOREIGN KEY (client_id) REFERENCES Clients(id)
-            """;
+           \s""";
 
             String sqlLignes = """
                 CREATE TABLE IF NOT EXISTS Lignes_Commande (
@@ -51,21 +51,26 @@ public class SQLCreationTable {
                 )
             """;
 
-            String sqlLignesAlter = """
-                ALTER TABLE Lignes_Commande 
-                    ADD CONSTRAINT fk_commande_id 
-                    FOREIGN KEY (commande_id) REFERENCES Commandes(id);
+            String sqlLignesAlter1 = """
                 ALTER TABLE Lignes_Commande
-                    ADD CONSTRAINT fk_produit_id 
-                    FOREIGN KEY (produit_id) REFERENCES Produits(id);
+                    ADD CONSTRAINT fk_lcommande_commande_id
+                    FOREIGN KEY (commande_id) REFERENCES Commandes(id)
             """;
+
+            String sqlLignesAlter2 = """
+                ALTER TABLE Lignes_Commande
+                    ADD CONSTRAINT fk_lcommande_produit_id
+                    FOREIGN KEY (produit_id) REFERENCES Produits(id)
+            """;
+
 
             st.execute(sqlProduits);
             st.execute(sqlClients);
             st.execute(sqlCommandes);
             st.execute(sqlCommandesAlter);
             st.execute(sqlLignes);
-            st.execute(sqlLignesAlter);
+            st.execute(sqlLignesAlter1);
+            st.execute(sqlLignesAlter2);
 
             System.out.println("Tables créées avec succès !");
         }
