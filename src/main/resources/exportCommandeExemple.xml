@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <commandes>
-    <commande id="C1" nb-produit ="3" >
-        <nom-client>Durand</ nom-client >
-        <email> durand @gmail.com </email>
-        <ville> Paris </ville>
+    <commande id="C1" nb-produit="3">
+        <nom-client>Durand</nom-client>
+        <email>durand@gmail.com</email>
+        <ville>Paris</ville>
         <date>25-5-2022</date>
-        <total> … < /total>
+        <total>200</total>
         <produits>
             <produit>
                 <nom>Clavier</nom>
@@ -24,12 +24,12 @@
             </produit>
         </produits>
     </commande>
-    <commande id="C2" nb-produit ="2" >
-        <nom-client >Dupont</ nom-client >
-        <email> dupont @gmail.com </email>
-        <ville> Lyon </ville>
+    <commande id="C2" nb-produit="2">
+        <nom-client>Dupont</nom-client>
+        <email>dupont@gmail.com</email>
+        <ville>Lyon</ville>
         <date>25-7-2023</date>
-        <total> … < /total>
+        <total>650</total>
         <produits>
             <produit>
                 <nom>Télévision</nom>
@@ -43,12 +43,12 @@
             </produit>
         </produits>
     </commande>
-    <commande id="C3" nb-produit ="1" >
-        <nom-client > Martin </ nom-client >
-        <email> martin @gmail.com </email>
-        <ville> Caen </ville>
+    <commande id="C3" nb-produit="1">
+        <nom-client>Martin</nom-client>
+        <email>martin@gmail.com</email>
+        <ville>Caen</ville>
         <date>25-10-2024</date>
-        <total> 300 < /total>
+        <total>600</total>
         <produits>
             <produit>
                 <nom>Machine à laver</nom>

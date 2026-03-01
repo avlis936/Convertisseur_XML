@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <commande>
     <client>
-        <nom-client>Durand</ nom-client >
-        <email> durand @gmail.com </email>
-        <ville> Paris </ville>
+        <nom-client>Durand</nom-client>
+        <email>durand@gmail.com</email>
+        <ville>Paris</ville>
     </client>
     <date>25-5-2022</date>
     <produits>

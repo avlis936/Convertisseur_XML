@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class ProduitDAO {
 
@@ -15,15 +16,26 @@ public class ProduitDAO {
         this.conn = conn;
     }
 
+    /**
+     * Insere un produit en base et met a jour son id auto-genere.
+     */
     public void insert(Produit p) throws SQLException {
         String sql = "INSERT INTO Produits(nom, prix, quantite) VALUES (?, ?, ?)";
-        PreparedStatement ps = conn.prepareStatement(sql);
+        PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         ps.setString(1, p.getNom());
-        ps.setDouble(2, p.getPrix());
+        ps.setDouble(2, p.getPrix()*2); // Le prix d'un produit inséré est le double de celui du fournisseur
         ps.setInt(3, p.getQuantite());
         ps.executeUpdate();
+
+        ResultSet keys = ps.getGeneratedKeys();
+        if (keys.next()) {
+            p.setId(keys.getInt(1));
+        }
     }
 
+    /**
+     * Recherche un produit par nom. Retourne null si introuvable.
+     */
     public Produit findByName(String nom) throws SQLException {
         String sql = "SELECT * FROM Produits WHERE nom = ?";
         PreparedStatement ps = conn.prepareStatement(sql);
@@ -31,11 +43,13 @@ public class ProduitDAO {
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
-            return new Produit(
+            Produit p = new Produit(
                     rs.getString("nom"),
                     rs.getDouble("prix"),
                     rs.getInt("quantite")
             );
+            p.setId(rs.getInt("id"));
+            return p;
         }
         return null;
     }
