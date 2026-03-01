@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <commandes>
     <commande id="C1" nb-produit ="3" >
         <nom-client>Durand</ nom-client >

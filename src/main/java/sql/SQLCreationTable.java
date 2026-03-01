@@ -9,59 +9,45 @@ public class SQLCreationTable {
         try (Connection conn = SQLConnection.getConnection();
              Statement st = conn.createStatement()) {
 
-            String sqlProduits = """
-                CREATE TABLE IF NOT EXISTS Produits (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    nom VARCHAR(100),
-                    prix DOUBLE,
-                    quantite INT
-                )
-            """;
+            String sqlProduits = "CREATE TABLE IF NOT EXISTS Produits (" +
+                    "\n    id INT AUTO_INCREMENT PRIMARY KEY," +
+                    "\n    nom VARCHAR(100)," +
+                    "\n    prix DOUBLE," +
+                    "\n    quantite INT" +
+                    "\n)";
 
-            String sqlClients = """
-                CREATE TABLE IF NOT EXISTS Clients (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    nom VARCHAR(100),
-                    email VARCHAR(100) UNIQUE,
-                    ville VARCHAR(100)
-                )
-            """;
+            String sqlClients = "CREATE TABLE IF NOT EXISTS Clients (" +
+                    "\n    id INT AUTO_INCREMENT PRIMARY KEY," +
+                    "\n    nom VARCHAR(100)," +
+                    "\n    email VARCHAR(100) UNIQUE," +
+                    "\n    ville VARCHAR(100)" +
+                    "\n)";
 
-            String sqlCommandes = """
-                CREATE TABLE IF NOT EXISTS Commandes (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    client_id INT,
-                    date_commande VARCHAR(20),
-                    total DOUBLE
-                )
-            """;
+            String sqlCommandes = "CREATE TABLE IF NOT EXISTS Commandes (" +
+                    "\n    id INT AUTO_INCREMENT PRIMARY KEY," +
+                    "\n    client_id INT," +
+                    "\n    date_commande VARCHAR(20)," +
+                    "\n    total DOUBLE" +
+                    "\n)";
 
-            String sqlCommandesAlter = """
-                ALTER TABLE Commandes ADD CONSTRAINT fk_commandes_client_id\s
-                    FOREIGN KEY (client_id) REFERENCES Clients(id)
-           \s""";
+            String sqlCommandesAlter = "ALTER TABLE Commandes ADD CONSTRAINT fk_commandes_client_id " +
+                    "FOREIGN KEY (client_id) REFERENCES Clients(id)";
 
-            String sqlLignes = """
-                CREATE TABLE IF NOT EXISTS Lignes_Commande (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    commande_id INT,
-                    produit_id INT,
-                    prix DOUBLE,
-                    quantite INT
-                )
-            """;
+            String sqlLignes = "CREATE TABLE IF NOT EXISTS Lignes_Commande (" +
+                    "\n    id INT AUTO_INCREMENT PRIMARY KEY," +
+                    "\n    commande_id INT," +
+                    "\n    produit_id INT," +
+                    "\n    prix DOUBLE," +
+                    "\n    quantite INT" +
+                    "\n)";
 
-            String sqlLignesAlter1 = """
-                ALTER TABLE Lignes_Commande
-                    ADD CONSTRAINT fk_lcommande_commande_id
-                    FOREIGN KEY (commande_id) REFERENCES Commandes(id)
-            """;
+            String sqlLignesAlter1 = "ALTER TABLE Lignes_Commande " +
+                    "ADD CONSTRAINT fk_lcommande_commande_id " +
+                    "FOREIGN KEY (commande_id) REFERENCES Commandes(id)";
 
-            String sqlLignesAlter2 = """
-                ALTER TABLE Lignes_Commande
-                    ADD CONSTRAINT fk_lcommande_produit_id
-                    FOREIGN KEY (produit_id) REFERENCES Produits(id)
-            """;
+            String sqlLignesAlter2 = "ALTER TABLE Lignes_Commande " +
+                    "ADD CONSTRAINT fk_lcommande_produit_id " +
+                    "FOREIGN KEY (produit_id) REFERENCES Produits(id)";
 
 
             st.execute(sqlProduits);
@@ -79,4 +65,3 @@ public class SQLCreationTable {
         }
     }
 }
-
