@@ -27,33 +27,5 @@ L’architecture du projet sépare clairement :
 
 📁 Structure du projet
 
-src/
-└── main/
-    ├── java/
-    │   ├── dao/
-    │   │   ├── ClientDAO.java      
-    │   │   ├── CommandeDAO.java
-    │   │   └── ProduitDAO.java
-    │   │
-    │   ├── main/                   
-    │   │   └── Application.java
-    │   │
-    │   ├── model/
-    │   │   ├── Client.java
-    │   │   ├── Commande.java
-    │   │   └── Produit.java
-    │   │
-    │   ├── sql/
-    │   │   ├── SQLConnection.java
-    │   │   ├── SQLCreationTable.java
-    │   │   └── SQLTest.java
-    │   │
-    │   └── XML/
-    │       ├── CommandesXML.java
-    │       ├── ExportCommandesXML.java
-    │       └── ProduitsXML.java
-    │
-    └── resources/
-    ├── produitsExemple.xml
-    ├── commandeExemple.xml
-    └── exportCommandeExemple.xml
+<img width="526" height="923" alt="image" src="https://github.com/user-attachments/assets/855d88ca-a96d-4e85-9f17-2c5ce5e2e722" />
+
