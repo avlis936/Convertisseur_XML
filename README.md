@@ -54,6 +54,6 @@ src/
     │       └── ProduitsXML.java
     │
     └── resources/
-        ├── produitsExemple.xml
-        ├── commandeExemple.xml
-        └── exportCommandeExemple.xml
+    ├── produitsExemple.xml
+    ├── commandeExemple.xml
+    └── exportCommandeExemple.xml
