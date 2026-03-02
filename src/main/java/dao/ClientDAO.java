@@ -53,4 +53,25 @@ public class ClientDAO {
         }
         return null;
     }
+
+    /**
+     * Recherche un client par id. Retourne null si introuvable.
+     */
+    public Client findById(int id) throws SQLException {
+        String sql = "SELECT * FROM Clients WHERE id = ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            Client c = new Client(
+                    rs.getString("nom"),
+                    rs.getString("email"),
+                    rs.getString("ville")
+            );
+            c.setId(rs.getInt("id"));
+            return c;
+        }
+        return null;
+    }
 }

@@ -1,5 +1,6 @@
 package dao;
 
+import model.Client;
 import model.Commande;
 import model.Produit;
 
@@ -8,7 +9,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import static XML.CommandesXML.calculerTotal;
 
@@ -60,5 +64,72 @@ public class CommandeDAO {
             ps.addBatch();
         }
         ps.executeBatch();
+    }
+
+    /**
+     * Recupere toutes les commandes depuis la base, avec leur client et leurs produits (lignes de commande).
+     */
+    public List<Commande> findAll() throws SQLException {
+        List<Commande> commandes = new ArrayList<Commande>();
+
+        // Requete qui joint Commandes + Clients
+        String sql = "SELECT c.id AS commande_id, c.date_commande, c.total, " +
+                "cl.id AS client_id, cl.nom AS client_nom, cl.email, cl.ville " +
+                "FROM Commandes c " +
+                "JOIN Clients cl ON c.client_id = cl.id " +
+                "ORDER BY c.id";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        while (rs.next()) {
+            // Reconstruire le client
+            Client client = new Client(
+                    rs.getString("client_nom"),
+                    rs.getString("email"),
+                    rs.getString("ville")
+            );
+            client.setId(rs.getInt("client_id"));
+
+            // Reconstruire la commande
+            String dateStr = rs.getString("date_commande");
+            java.util.Date date;
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                date = sdf.parse(dateStr);
+            } catch (ParseException e) {
+                // Si le format ne correspond pas, on essaie un autre format courant
+                try {
+                    SimpleDateFormat sdf2 = new SimpleDateFormat("dd-M-yyyy");
+                    date = sdf2.parse(dateStr);
+                } catch (ParseException e2) {
+                    date = new java.util.Date(); // fallback
+                }
+            }
+
+            Commande commande = new Commande(rs.getInt("commande_id"), client, date);
+
+            // Charger les produits (lignes de commande) de cette commande
+            String sqlLignes = "SELECT lc.prix, lc.quantite, p.id AS produit_id, p.nom " +
+                    "FROM Lignes_Commande lc " +
+                    "JOIN Produits p ON lc.produit_id = p.id " +
+                    "WHERE lc.commande_id = ?";
+            PreparedStatement psLignes = conn.prepareStatement(sqlLignes);
+            psLignes.setInt(1, commande.getId());
+            ResultSet rsLignes = psLignes.executeQuery();
+
+            while (rsLignes.next()) {
+                Produit produit = new Produit(
+                        rsLignes.getString("nom"),
+                        rsLignes.getDouble("prix"),
+                        rsLignes.getInt("quantite")
+                );
+                produit.setId(rsLignes.getInt("produit_id"));
+                commande.addProduit(produit);
+            }
+
+            commandes.add(commande);
+        }
+
+        return commandes;
     }
 }

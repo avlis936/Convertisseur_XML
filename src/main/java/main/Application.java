@@ -1,6 +1,7 @@
 package main;
 
 import XML.CommandesXML;
+import XML.ExportCommandesXML;
 import XML.ProduitsXML;
 
 public class Application {
@@ -30,6 +31,12 @@ public class Application {
             System.out.println();
             System.out.println("=== Insertion de la commande en base ===");
             commandes.insertCommandeDansSQL();
+
+            // --- Export des commandes en XML ---
+            System.out.println();
+            System.out.println("=== Export des commandes depuis la base vers XML ===");
+            ExportCommandesXML export = new ExportCommandesXML();
+            export.exporter();
 
         } catch (Exception e) {
             e.printStackTrace();
