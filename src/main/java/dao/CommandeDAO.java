@@ -50,20 +50,66 @@ public class CommandeDAO {
 
     /**
      * Insere les lignes de commande (table Lignes_Commande) pour chaque produit.
-     * La commande et les produits doivent deja avoir des ids valides.
+     * Vérifie la disponibilité et décrémente le stock en base avant d'insérer chaque ligne.
+     * Opère dans une transaction : si une ligne échoue (stock insuffisant), tout est rollback.
      */
     public void insertLignes(Commande c) throws SQLException {
+        ProduitDAO produitDAO = new ProduitDAO(conn);
         String sql = "INSERT INTO Lignes_Commande(commande_id, produit_id, prix, quantite) VALUES (?, ?, ?, ?)";
-        PreparedStatement ps = conn.prepareStatement(sql);
+        PreparedStatement ps = null;
 
-        for (Produit p : c.getProduits()) {
-            ps.setInt(1, c.getId());
-            ps.setInt(2, p.getId());
-            ps.setDouble(3, p.getPrix());
-            ps.setInt(4, p.getQuantite());
-            ps.addBatch();
+        boolean previousAutoCommit = conn.getAutoCommit();
+        try {
+            // démarrer une transaction
+            conn.setAutoCommit(false);
+
+            ps = conn.prepareStatement(sql);
+
+            for (Produit p : c.getProduits()) {
+                // Vérifier l'id du produit
+                if (p.getId() <= 0) {
+                    // pas d'id -> impossible d'ajouter
+                    conn.rollback();
+                    throw new SQLException("Produit sans id valide: " + p.getNom());
+                }
+
+                // tenter de décrémenter le stock de façon atomique
+                boolean disponible = produitDAO.decrementQuantite(p.getId(), p.getQuantite());
+                if (!disponible) {
+                    // stock insuffisant -> rollback et exception
+                    conn.rollback();
+                    throw new SQLException("Stock insuffisant pour le produit id=" + p.getId() + " nom='" + p.getNom() + "'");
+                }
+
+                // stock ok -> ajouter la ligne
+                ps.setInt(1, c.getId());
+                ps.setInt(2, p.getId());
+                ps.setDouble(3, p.getPrix());
+                ps.setInt(4, p.getQuantite());
+                ps.addBatch();
+            }
+
+            ps.executeBatch();
+
+            // tout est bon -> commit
+            conn.commit();
+        } catch (SQLException ex) {
+            // rollback en cas d'erreur
+            try {
+                conn.rollback();
+            } catch (SQLException r) {
+                // ignore
+            }
+            throw ex;
+        } finally {
+            // restaurer l'auto-commit et fermer le prepared statement
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                // ignore
+            }
+            conn.setAutoCommit(previousAutoCommit);
         }
-        ps.executeBatch();
     }
 
     /**

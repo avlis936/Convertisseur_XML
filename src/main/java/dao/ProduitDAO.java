@@ -53,4 +53,18 @@ public class ProduitDAO {
         }
         return null;
     }
+
+    /**
+     * Décrémente la quantité d'un produit en base de façon atomique.
+     * Retourne true si la mise à jour a eu lieu (stock suffisant), false sinon.
+     */
+    public boolean decrementQuantite(int produitId, int qte) throws SQLException {
+        String sql = "UPDATE Produits SET quantite = quantite - ? WHERE id = ? AND quantite >= ?";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, qte);
+        ps.setInt(2, produitId);
+        ps.setInt(3, qte);
+        int updated = ps.executeUpdate();
+        return updated > 0;
+    }
 }
